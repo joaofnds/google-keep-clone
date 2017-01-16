@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Google Keep Clone</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="icon" href="/dist/logo.png">
+		<link rel="stylesheet" href="/dist/style.css">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+		<link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
+	</head>
+	<body>
+		
+		<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--no-drawer-button mdl-layout--no-desktop-drawer-button">
+			<header class="mdl-layout__header">
+				<div class="mdl-layout__header-row">
+					<i class="material-icons">assignment</i>
+					<span class="mdl-layout-title">Juaum Keep</span>
+			</header>
+
+			<main id="app" class="mdl-layout__content">
+				<note-form @newnote='createNote'></note-form>
+				<note v-for='note in notes' :notetitle='note.title' :notebody='note.body'></note>
+			</main>
+
+		</div>
+		<script src="/dist/build.js"></script>
+	</body>
+</html>
