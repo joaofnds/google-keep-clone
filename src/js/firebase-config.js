@@ -18,12 +18,12 @@ export var getCurrentUser = new Promise( resolve => {
 	firebase.auth().onAuthStateChanged(function (user) {
 		if(user) {
 			currentUser = user
-			resolve(user)
 			databaseRef = firebase.database().ref(user.uid)
-		}
-		else
+			resolve(user)
+		} else {
 			currentUser = null
 			databaseRef = null
+		}
 	});
 })
 
