@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<title>Google Keep Clone</title>
+		<title>Juaum Keep</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="icon" href="/dist/logo.png">
 		<link rel="stylesheet" href="/dist/style.css">
@@ -18,7 +18,13 @@
 					<span class="mdl-layout-title">Juaum Keep</span>
 					<div class="mdl-layout-spacer"></div>
 					<div v-if='user'>
-						<img v-if='user.photoURL' id='userHeaderPhoto' :src="user.photoURL">
+						<div v-if='user.photoURL' class="userContainer">
+							<span class="mdl-layout-title displayName">{{ user.displayName }}</span>
+							<img id='userHeaderPhoto' :src="user.photoURL">
+							<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for='userHeaderPhoto'>
+								<li @click='signOut' class="mdl-menu__item">Sing Out</li>
+							</ul>
+						</div>
 						<i v-else class="material-icons">account_circle</i>
 					</div>
 					<div v-else>
@@ -31,7 +37,7 @@
 
 			<main class="mdl-layout__content">
 				<note-form @newnote='createNote'></note-form>
-				<note v-for='note in notes' :notetitle='note.title' :notebody='note.body'></note>
+				<note v-for='(note, index) in notes' :noteindex='index' :notetitle='note.title' :notebody='note.body' @delete='deletenote'></note>
 			</main>
 
 			<div id="snackbar" class="mdl-js-snackbar mdl-snackbar">

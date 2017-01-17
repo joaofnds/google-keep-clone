@@ -29,20 +29,66 @@ const app = new Vue({
 		}
 	},
 
+	watch: {
+		user: function() {
+			this.$nextTick(() => {
+				componentHandler.upgradeDom();
+			});
+
+			if(this.user) {
+				if(this.notes != []) {
+					this.notes.forEach( k => { databaseRef.push().set(k) })
+				}
+				showNotification("Signed in!", 2000)
+				databaseRef.on('value', snap => {
+					this.notes = snap.val()
+				})
+			} else {
+				showNotification("Signed out!", 2000)
+			}
+
+		},
+		notes: function() {
+			this.$nextTick(() => {
+				componentHandler.upgradeDom();
+			});
+		}
+	},
+
 	methods: {
 		createNote(noteData) {
 			if(!currentUser) {
-				showNotification("You need to login first!", 2500)
+				this.notes.push(noteData)
 			} else {
 				databaseRef.push().set(noteData)
 			}
 		},
+		deletenote(index) {
+			let deletednote = this.notes[index]
+			databaseRef.child(index).remove()
+
+			showNotification("Note deleted", 3000, "UNDO", () => {
+				let snackbar = document.querySelector('#snackbar')
+				snackbar.classList.remove('mdl-snackbar--active')
+				databaseRef.child(index).set(deletednote)
+			})
+		},
 		signIn() {
+			let context = this
 			firebase.auth().signInWithPopup(provider).then(function(result) {
-				this.user = result.user
+				context.user = result.user
 			}).catch(function(error) {
 				console.log(error.code)
 				console.log(error.message)
+			});
+		},
+		signOut() {
+			let context = this
+			firebase.auth().signOut().then(function() {
+				context.user = null
+				context.notes = []
+			}, function(error) {
+				console.log('error signing out')
 			});
 		}
 	},
@@ -56,14 +102,11 @@ const app = new Vue({
 	mounted() {
 		getCurrentUser.then( user => {
 			this.user = user
-			databaseRef.on('value', snap => {
-				this.notes = snap.val()
-			})
 		})
 	}
 })
 
-export function showNotification(text, time, actionText, callback) {
+function showNotification(text, time, actionText, callback) {
 	let snackbar = document.querySelector('#snackbar')
 	let notificationData = {
 		message: text,
