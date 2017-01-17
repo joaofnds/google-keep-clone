@@ -28,10 +28,10 @@
 						<i v-else class="material-icons">account_circle</i>
 					</div>
 					<div v-else>
-						<label for="signInButton" @click='signIn' class="mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect">
+						<span class="mdl-layout-title displayName">Sign in</span>
+						<label for="signInLabel" @click='signIn' class="mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect">
 							<i id='signInButton' class="material-icons">exit_to_app</i>
 						</label>
-						<div class="mdl-tooltip" data-mdl-for='signInButton'>Sign In!</div>
 					</div>
 			</header>
 

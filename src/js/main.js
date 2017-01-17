@@ -65,13 +65,24 @@ const app = new Vue({
 		},
 		deletenote(index) {
 			let deletednote = this.notes[index]
-			databaseRef.child(index).remove()
 
-			showNotification("Note deleted", 3000, "UNDO", () => {
-				let snackbar = document.querySelector('#snackbar')
-				snackbar.classList.remove('mdl-snackbar--active')
-				databaseRef.child(index).set(deletednote)
-			})
+			if(this.user) {
+				databaseRef.child(index).remove()
+
+				showNotification("Note deleted", 3000, "UNDO", () => {
+					let snackbar = document.querySelector('#snackbar')
+					snackbar.classList.remove('mdl-snackbar--active')
+					databaseRef.child(index).set(deletednote)
+				})
+			} else {
+				this.notes.splice(index, 1)
+				
+				showNotification("Note deleted", 3000, "UNDO", () => {
+					let snackbar = document.querySelector('#snackbar')
+					snackbar.classList.remove('mdl-snackbar--active')
+					this.notes.push(deletednote)
+				})
+			}
 		},
 		signIn() {
 			let context = this
@@ -103,6 +114,9 @@ const app = new Vue({
 		getCurrentUser.then( user => {
 			this.user = user
 		})
+		this.$nextTick(() => {
+			componentHandler.upgradeDom();
+		});
 	}
 })
 
