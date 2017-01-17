@@ -7,10 +7,12 @@ import '../sass/main.sass'
 import Note from './components/Note.vue'
 import Form from './components/NoteForm.vue'
 
-const provider = new firebase.auth.GoogleAuthProvider();
+const provider = new firebase.auth.GoogleAuthProvider()
+var snackbar
 
 (() => {
-
+	snackbar = document.getElementById('snackbar')
+	window.foo = snackbar
 })()
 
 const app = new Vue({
@@ -19,15 +21,21 @@ const app = new Vue({
 		'note-form': Form,
 		'note': Note
 	},
+
 	data() {
 		return {
 			user: null,
 			notes: []
 		}
 	},
+
 	methods: {
 		createNote(noteData) {
-			databaseRef.push().set(noteData)
+			if(!currentUser) {
+				showNotification("You need to login first!", 2500)
+			} else {
+				databaseRef.push().set(noteData)
+			}
 		},
 		signIn() {
 			firebase.auth().signInWithPopup(provider).then(function(result) {
@@ -38,6 +46,13 @@ const app = new Vue({
 			});
 		}
 	},
+
+	ready () {
+		this.$nextTick(() => {
+			componentHandler.upgradeDom();
+		});
+	},
+
 	mounted() {
 		getCurrentUser.then( user => {
 			this.user = user
@@ -47,3 +62,15 @@ const app = new Vue({
 		})
 	}
 })
+
+export function showNotification(text, time, actionText, callback) {
+	let snackbar = document.querySelector('#snackbar')
+	let notificationData = {
+		message: text,
+		actionHandler: callback ? callback : (e) => { snackbar.classList.remove('mdl-snackbar--active') },
+		actionText: actionText ? actionText : "DISMISS",
+		timeout: time ? time : 2500
+	}
+	if(snackbar.MaterialSnackbar)
+		snackbar.MaterialSnackbar.showSnackbar(notificationData)
+}
