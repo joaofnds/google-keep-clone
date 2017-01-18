@@ -1,0 +1,37 @@
+.noteEditMode
+	position: absolute
+	top: 0
+	left: 0
+	bottom: 0
+	right: 0
+	z-index: 999
+	opacity: 0
+	cursor: pointer
+	pointer-events: none
+	padding: 6px 8px
+	background-color: rgba(229, 229, 229, .9)
+	transition: all 250ms cubic-bezier(.4,0,.2,1)
+
+	.cancelButton
+		float: right
+		color: #212121
+
+	form
+		transform: translateY(-110%)
+		transition: all 250ms cubic-bezier(.4,0,.2,1)
+
+	&.is-visible
+		opacity: 1
+		pointer-events: auto
+
+		form
+			margin-top: 20%
+			transform: translate(0%)
+
+	.hint
+		display: inline-block
+		width: 100%
+		text-align: center
+		padding: 20px 10px
+		font-size: 1.3em
+		color: #9e9e9e

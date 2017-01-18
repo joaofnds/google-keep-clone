@@ -1,3 +1,5 @@
+'use strict';
+
 import Vue from 'vue'
 import firebase from 'firebase'
 import { getCurrentUser, currentUser, databaseRef } from './firebase-config'
@@ -8,11 +10,10 @@ import Note from './components/Note.vue'
 import Form from './components/NoteForm.vue'
 
 const provider = new firebase.auth.GoogleAuthProvider()
-var snackbar
+var editNote
 
 (() => {
-	snackbar = document.getElementById('snackbar')
-	window.foo = snackbar
+
 })()
 
 const app = new Vue({
@@ -25,7 +26,9 @@ const app = new Vue({
 	data() {
 		return {
 			user: null,
-			notes: []
+			notes: [],
+			editMode: false,
+			editNoteIndex: '',
 		}
 	},
 
@@ -63,6 +66,7 @@ const app = new Vue({
 				databaseRef.push().set(noteData)
 			}
 		},
+
 		deletenote(index) {
 			let deletednote = this.notes[index]
 
@@ -82,6 +86,26 @@ const app = new Vue({
 					snackbar.classList.remove('mdl-snackbar--active')
 					this.notes.push(deletednote)
 				})
+			}
+		},
+		editNote(index) {
+			this.editMode = true
+			this.editNoteIndex = index
+			let note = this.notes[index]
+			this.$refs.editForm._data.title = note.title
+			this.$refs.editForm._data.body = note.body
+		},
+		updateNote(noteData) {
+			this.editMode = false
+
+			databaseRef.child(this.editNoteIndex).set(noteData)
+			this.editNoteIndex = ''
+		},
+		cancelUpdateNote(e) {
+			if ( (e.target.tagName == "DIV" || e.target.tagName == "SPAN") && this.editMode){
+				this.editMode = false
+				this.$refs.editForm._data.title = ''
+				this.$refs.editForm._data.body = ''
 			}
 		},
 		signIn() {

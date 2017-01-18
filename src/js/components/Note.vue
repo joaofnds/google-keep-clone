@@ -1,18 +1,31 @@
 <template lang="pug">
-	div.mdl-card.mdl-shadow--2dp
+	div.mdl-card.mdl-shadow--2dp.mdl-cell.mdl-cell--3-col-desktop.mdl-cell--4-col-tablet.mdl-cell--12-col-phone
 		.row
 			.title {{notetitle}}
-			button.menu.mdl-button.mdl-js-button.mdl-button--icon.mdl-js-ripple-effect(@click='deleteNote')
-				i.material-icons.mdl-color-text--grey-700 delete
+			button.menu.mdl-button.mdl-js-button.mdl-button--icon.mdl-js-ripple-effect(:id="noteindex")
+				i.material-icons.mdl-color-text--grey-700 more_vert
+			ul.mdl-menu.mdl-menu--bottom-right.mdl-js-menu.mdl-js-ripple-effect(:for='noteindex')
+				li.mdl-menu__item(@click='editNote') Edit
+				li.mdl-menu__item(@click='deleteNote') Delete
 		.body {{notebody}}
 </template>
 
 <script>
 	export default {
 		props: [ 'noteindex','notetitle', 'notebody'],
+
+		ready () {
+			this.$nextTick(() => {
+				componentHandler.upgradeDom();
+			});
+		},
+
 		methods: {
 			deleteNote() {
 				this.$emit('delete', this.noteindex)
+			},
+			editNote() {
+				this.$emit('edit', this.noteindex)
 			}
 		}
 	}
@@ -20,12 +33,12 @@
 
 <style lang="sass">
 	.mdl-card
-		min-height: initial!important
-		min-width: initial!important
-		width: auto!important
-		margin: 10px auto
-		max-width: 512px
-		overflow: visible
+		// min-height: initial!important
+		// min-width: initial!important
+		// width: auto!important
+		// margin: 10px auto
+		// max-width: 512px
+		// overflow: visible
 
 	.row
 		padding: 10px 15px

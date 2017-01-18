@@ -37,8 +37,23 @@
 
 			<main class="mdl-layout__content">
 				<note-form @newnote='createNote'></note-form>
-				<note v-for='(note, index) in notes' :noteindex='index' :notetitle='note.title' :notebody='note.body' @delete='deletenote'></note>
+				<div class="mdl-grid">
+					<note v-for='(note, index) in notes'
+							:noteindex='index'
+							:notetitle='note.title'
+							:notebody='note.body'
+							@delete='deletenote'
+							@edit='editNote'></note>
+				</div>
 			</main>
+
+			<div :class="{ 'is-visible': editMode }" class="noteEditMode" @click='cancelUpdateNote($event)'>
+				<button @click='cancelUpdateNote($event)' class="cancelButton mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect">
+					<i class="material-icons" >close</i>
+				</button>
+				<note-form ref='editForm' @newnote='updateNote'></note-form>
+				<span class="hint">Click outside to cancel</span>
+			</div>
 
 			<div id="snackbar" class="mdl-js-snackbar mdl-snackbar">
 				<div class="mdl-snackbar__text"></div>
