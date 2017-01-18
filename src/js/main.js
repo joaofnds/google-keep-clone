@@ -12,9 +12,9 @@ import Form from './components/NoteForm.vue'
 const provider = new firebase.auth.GoogleAuthProvider()
 var editNote
 
-(() => {
+window.onload = () => {
 
-})()
+}
 
 const app = new Vue({
 	el: '#app',
@@ -28,7 +28,7 @@ const app = new Vue({
 			user: null,
 			notes: [],
 			editMode: false,
-			editNoteIndex: '',
+			editNoteIndex: null,
 		}
 	},
 
@@ -94,16 +94,23 @@ const app = new Vue({
 			let note = this.notes[index]
 			this.$refs.editForm._data.title = note.title
 			this.$refs.editForm._data.body = note.body
+			setTimeout( _ => {
+				this.$refs.editForm._data.body = note.body + ' '
+			}, 1)
 		},
 		updateNote(noteData) {
 			this.editMode = false
+			if(this.user)
+				databaseRef.child(this.editNoteIndex).set(noteData)
+			else 
+				this.notes[this.editNoteIndex] = noteData
 
-			databaseRef.child(this.editNoteIndex).set(noteData)
-			this.editNoteIndex = ''
+			this.editNoteIndex = null
 		},
 		cancelUpdateNote(e) {
-			if ( (e.target.tagName == "DIV" || e.target.tagName == "SPAN") && this.editMode){
+			if ( (e.target.id == "noteEditObfuscator" || e.target.parentElement.id == "noteEditClose") && this.editMode) {
 				this.editMode = false
+				this.editNoteIndex = null
 				this.$refs.editForm._data.title = ''
 				this.$refs.editForm._data.body = ''
 			}

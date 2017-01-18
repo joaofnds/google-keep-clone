@@ -1,22 +1,46 @@
 <template lang="pug">
 	form#createNoteForm.mdl-card.mdl-shadow--2dp(@submit.prevent='createNote')
-		input.noteTitle(type='text', v-model='title', name='title', placeholder='Title', required='')
-		textarea.noteBody(v-model='body', name='body', placeholder='Take a note...', required='')
+		input.noteTitle(type='text',
+							v-model='title',
+							name='title',
+							placeholder='Title',
+							required='')
+		textarea.noteBody(v-model='body',
+							name='body',
+							placeholder='Take a note...',
+							rows='1',
+							required=''
+							ref='textArea')
 		button#submitButton.mdl-button.mdl-js-button.mdl-js-ripple-effect.mdl-color-text--grey-800 Done
 </template>
 
 <script>
+
 	export default {
 		data() {
 			return {
 				title: '',
-				body: ''
+				body: '',
 			}
 		},
+
+		ready() { this.resize(this.$refs.textArea) },
+
+		watch: {
+			body: function() {
+				this.resize(this.$refs.textArea);
+			}
+		},
+
 		methods: {
 			createNote: function() {
-				this.$emit('newnote', { title: this.title, body: this.body })
+				this.$emit('newnote', { title: this.title.trim(), body: this.body.trim() })
 				this.title = this.body = ''
+			},
+			resize: function(t) {
+				var offset= !window.opera ? (t.offsetHeight - t.clientHeight) : (t.offsetHeight + parseInt(window.getComputedStyle(t, null).getPropertyValue('border-top-width')));
+				t.style.height = 'auto';
+				t.style.height = (t.scrollHeight  + offset ) + 'px';
 			}
 		}
 	}

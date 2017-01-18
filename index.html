@@ -47,8 +47,8 @@
 				</div>
 			</main>
 
-			<div :class="{ 'is-visible': editMode }" class="noteEditMode" @click='cancelUpdateNote($event)'>
-				<button @click='cancelUpdateNote($event)' class="cancelButton mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect">
+			<div id='noteEditObfuscator' :class="{ 'is-visible': editMode }" class="noteEditMode" @click='cancelUpdateNote($event)'>
+				<button id='noteEditClose' @click='cancelUpdateNote($event)' class="cancelButton mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect">
 					<i class="material-icons" >close</i>
 				</button>
 				<note-form ref='editForm' @newnote='updateNote'></note-form>
