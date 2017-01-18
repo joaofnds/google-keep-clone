@@ -1,4 +1,6 @@
-> A Vue.js project
+# Google Keep Clone built with Vue, Firebase and MDL
+
+Take a look at the project: https://project--1859386222849825921.firebaseapp.com/
 
 ## Build Setup
 
