@@ -16,6 +16,19 @@ window.onload = () => {
 
 }
 
+// Register ServiceWorker
+
+if ('serviceWorker' in navigator) {
+	navigator.ServiceWorker
+		.register('./service-worker.js', {scope: './'})
+		.then( registration => {
+			console.log('ServiceWorker registered', registration)
+		})
+		.catch( err => {
+			console.log('ServiceWorker failed to register', err)
+		})
+}
+
 const app = new Vue({
 	el: '#app',
 	components: {
