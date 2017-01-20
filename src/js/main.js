@@ -16,11 +16,9 @@ window.onload = () => {
 
 }
 
-// Register ServiceWorker
-
 if ('serviceWorker' in navigator) {
-	navigator.ServiceWorker
-		.register('./service-worker.js', {scope: './'})
+	navigator.serviceWorker
+		.register('./serviceWorker.js', {scope: './'})
 		.then( registration => {
 			console.log('ServiceWorker registered', registration)
 		})
@@ -145,6 +143,19 @@ const app = new Vue({
 			}, function(error) {
 				console.log('error signing out')
 			});
+		},
+		leave(el, done) {
+			let top = el.offsetTop+'px'
+			let left = el.offsetLeft+'px'
+			let height = el.clientHeight+'px'
+			let width = el.clientWidth+'px'
+			el.style.transform = 'scale(0)'
+			el.style.position = 'absolute'
+			el.style.top = top
+			el.style.left = left
+			el.style.height = height
+			el.style.width = width
+			el.style.opacity = 0
 		}
 	},
 

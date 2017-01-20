@@ -37,14 +37,15 @@
 
 			<main class="mdl-layout__content">
 				<note-form @newnote='createNote'></note-form>
-				<div class="mdl-grid">
+				<transition-group v-on:leave='leave' tag='div' class='mdl-grid'>
 					<note v-for='(note, index) in notes'
 							:noteindex='index'
 							:notetitle='note.title'
 							:notebody='note.body'
+							:key='index'
 							@delete='deletenote'
 							@edit='editNote'></note>
-				</div>
+				</transition>
 			</main>
 
 			<div id='noteEditObfuscator' :class="{ 'is-visible': editMode }" class="noteEditMode" @click='cancelUpdateNote($event)'>
