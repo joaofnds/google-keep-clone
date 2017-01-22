@@ -3,7 +3,7 @@
 import Vue from 'vue'
 import firebase from 'firebase'
 import { getCurrentUser, currentUser, databaseRef } from './firebase-config'
-import '../../node_modules/material-design-lite/material.min'
+import '../lib/mdl/material'
 import '../sass/main.sass'
 
 import Note from './components/Note.vue'
@@ -13,18 +13,7 @@ const provider = new firebase.auth.GoogleAuthProvider()
 var editNote
 
 window.onload = () => {
-
-}
-
-if ('serviceWorker' in navigator) {
-	navigator.serviceWorker
-		.register('./serviceWorker.js', {scope: './'})
-		.then( registration => {
-			console.log('ServiceWorker registered', registration)
-		})
-		.catch( err => {
-			console.log('ServiceWorker failed to register', err)
-		})
+	
 }
 
 const app = new Vue({
@@ -53,7 +42,7 @@ const app = new Vue({
 				if(this.notes != []) {
 					this.notes.forEach( k => { databaseRef.push().set(k) })
 				}
-				showNotification("Signed in!", 2000)
+				showNotification("Signed in!", 20000)
 				databaseRef.on('value', snap => {
 					this.notes = snap.val()
 				})
@@ -85,16 +74,14 @@ const app = new Vue({
 				databaseRef.child(index).remove()
 
 				showNotification("Note deleted", 3000, "UNDO", () => {
-					let snackbar = document.querySelector('#snackbar')
-					snackbar.classList.remove('mdl-snackbar--active')
+					document.querySelector('#snackbar').MaterialSnackbar.hideSnackbar()
 					databaseRef.child(index).set(deletednote)
 				})
 			} else {
 				this.notes.splice(index, 1)
 				
 				showNotification("Note deleted", 3000, "UNDO", () => {
-					let snackbar = document.querySelector('#snackbar')
-					snackbar.classList.remove('mdl-snackbar--active')
+					document.querySelector('#snackbar').MaterialSnackbar.hideSnackbar()
 					this.notes.push(deletednote)
 				})
 			}
@@ -179,7 +166,7 @@ function showNotification(text, time, actionText, callback) {
 	let snackbar = document.querySelector('#snackbar')
 	let notificationData = {
 		message: text,
-		actionHandler: callback ? callback : (e) => { snackbar.classList.remove('mdl-snackbar--active') },
+		actionHandler: callback ? callback : (e) => { snackbar.MaterialSnackbar.hideSnackbar() },
 		actionText: actionText ? actionText : "DISMISS",
 		timeout: time ? time : 2500
 	}
