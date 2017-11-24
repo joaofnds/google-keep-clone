@@ -1,30 +1,30 @@
-import firebase from 'firebase'
+import firebase from 'firebase';
 
 // Initialize Firebase
-var config = {
-	apiKey: "AIzaSyD3DB506Rnx7186JRJNN7e3sO21isyEWWU",
-	authDomain: "project--1859386222849825921.firebaseapp.com",
-	databaseURL: "https://project--1859386222849825921.firebaseio.com",
-	storageBucket: "project--1859386222849825921.appspot.com",
-	messagingSenderId: "256405949063"
+const config = {
+  apiKey: 'AIzaSyD3DB506Rnx7186JRJNN7e3sO21isyEWWU',
+  authDomain: 'project--1859386222849825921.firebaseapp.com',
+  databaseURL: 'https://project--1859386222849825921.firebaseio.com',
+  storageBucket: 'project--1859386222849825921.appspot.com',
+  messagingSenderId: '256405949063',
 };
 
 firebase.initializeApp(config);
 
-var databaseRef = null
-var currentUser = null
+let databaseRef = null;
+let currentUser = null;
 
-export var getCurrentUser = new Promise( resolve => {
-	firebase.auth().onAuthStateChanged(function (user) {
-		if(user) {
-			currentUser = user
-			databaseRef = firebase.database().ref(user.uid)
-			resolve(user)
-		} else {
-			currentUser = null
-			databaseRef = null
-		}
-	});
-})
+export const getCurrentUser = new Promise((resolve) => {
+  firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+      currentUser = user;
+      databaseRef = firebase.database().ref(user.uid);
+      resolve(user);
+    } else {
+      currentUser = null;
+      databaseRef = null;
+    }
+  });
+});
 
-export { currentUser, databaseRef }
+export { currentUser, databaseRef };

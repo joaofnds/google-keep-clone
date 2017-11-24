@@ -1,67 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<title>Juaum Keep</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="icon" href="/dist/logo.png">
-		<link rel="stylesheet" href="/dist/style.css">
-		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-		<link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
-	</head>
-	<body>
-		
-		<div id="app" class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--no-drawer-button mdl-layout--no-desktop-drawer-button">
-			<header class="mdl-layout__header">
-				<div class="mdl-layout__header-row">
-					<i class="material-icons">assignment</i>
-					<span class="mdl-layout-title">Juaum Keep</span>
-					<div class="mdl-layout-spacer"></div>
-					<div v-if='user'>
-						<div v-if='user.photoURL' class="userContainer">
-							<span class="mdl-layout-title displayName">{{ user.displayName }}</span>
-							<img id='userHeaderPhoto' :src="user.photoURL">
-							<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for='userHeaderPhoto'>
-								<li @click='signOut' class="mdl-menu__item">Sign Out</li>
-							</ul>
-						</div>
-						<i v-else class="material-icons">account_circle</i>
-					</div>
-					<div v-else>
-						<span class="mdl-layout-title displayName">Sign in</span>
-						<label for="signInLabel" @click='signIn' class="mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect">
-							<i id='signInButton' class="material-icons">exit_to_app</i>
-						</label>
-					</div>
-			</header>
+  <head>
+    <meta charset="utf-8">
+    <title>Juaum Keep</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="/dist/logo.png">
+    <link rel="stylesheet" href="/dist/style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
+  </head>
+  <body>
 
-			<main class="mdl-layout__content">
-				<note-form @newnote='createNote'></note-form>
-				<transition-group v-on:leave='leave' tag='div' class='mdl-grid'>
-					<note v-for='(note, index) in notes'
-							:noteindex='index'
-							:notetitle='note.title'
-							:notebody='note.body'
-							:key='index'
-							@delete='deletenote'
-							@edit='editNote'></note>
-				</transition>
-			</main>
+    <div id="app" class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--no-drawer-button mdl-layout--no-desktop-drawer-button">
+      <header class="mdl-layout__header">
+        <div class="mdl-layout__header-row">
+          <i class="material-icons">assignment</i>
+          <span class="mdl-layout-title">Juaum Keep</span>
+          <div class="mdl-layout-spacer"></div>
+          <div v-if='user'>
+            <div v-if='user.photoURL' class="userContainer">
+              <span class="mdl-layout-title displayName">{{ user.displayName }}</span>
+              <img id='userHeaderPhoto' :src="user.photoURL">
+              <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for='userHeaderPhoto'>
+                <li @click='signOut' class="mdl-menu__item">Sign Out</li>
+              </ul>
+            </div>
+            <i v-else class="material-icons">account_circle</i>
+          </div>
+          <div v-else>
+            <span class="mdl-layout-title displayName">Sign in</span>
+            <label for="signInLabel" @click='signIn' class="mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect">
+              <i id='signInButton' class="material-icons">exit_to_app</i>
+            </label>
+          </div>
+      </header>
 
-			<div id='noteEditObfuscator' :class="{ 'is-visible': editMode }" class="noteEditMode" @click='cancelUpdateNote($event)'>
-				<button id='noteEditClose' @click='cancelUpdateNote($event)' class="cancelButton mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect">
-					<i class="material-icons" >close</i>
-				</button>
-				<note-form ref='editForm' @newnote='updateNote'></note-form>
-				<span class="hint">Click outside to cancel</span>
-			</div>
+      <main class="mdl-layout__content">
+        <note-form @newnote='createNote'></note-form>
+        <transition-group v-on:leave='leave' tag='div' class='mdl-grid'>
+          <note v-for='(note, index) in notes'
+              :noteindex='index'
+              :notetitle='note.title'
+              :notebody='note.body'
+              :key='index'
+              @delete='deletenote'
+              @edit='editNote'></note>
+        </transition>
+      </main>
 
-			<div id="snackbar" class="mdl-js-snackbar mdl-snackbar">
-				<div class="mdl-snackbar__text"></div>
-				<button class="mdl-snackbar__action" type="button"></button>
-			</div>
+      <div id='noteEditObfuscator' :class="{ 'is-visible': editMode }" class="noteEditMode" @click='cancelUpdateNote($event)'>
+        <button id='noteEditClose' @click='cancelUpdateNote($event)' class="cancelButton mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect">
+          <i class="material-icons" >close</i>
+        </button>
+        <note-form ref='editForm' @newnote='updateNote'></note-form>
+        <span class="hint">Click outside to cancel</span>
+      </div>
 
-		</div>
-		<script src="/dist/build.js"></script>
-	</body>
+      <div id="snackbar" class="mdl-js-snackbar mdl-snackbar">
+        <div class="mdl-snackbar__text"></div>
+        <button class="mdl-snackbar__action" type="button"></button>
+      </div>
+
+    </div>
+    <script src="/dist/build.js"></script>
+  </body>
 </html>
