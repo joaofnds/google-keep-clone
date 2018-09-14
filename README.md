@@ -2,6 +2,8 @@
 
 Take a look at the project: https://project--1859386222849825921.firebaseapp.com/
 
+_I've rebuilt this project using firestore, you can find it at [firestore-google-keep-clone](https://github.com/joaofnds/firestore-google-keep-clone)_
+
 ## Build Setup
 
 ``` bash
